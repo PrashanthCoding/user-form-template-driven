@@ -1,0 +1,166 @@
+<div class="bg">
+  <canvas class="bubble-canvas"></canvas>
+
+  <div class="form-card">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      </div>
+      <div>
+        <h2>Create Account</h2>
+        <p class="subtitle">Fill in your details to get started</p>
+      </div>
+    </div>
+
+    <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)" novalidate>
+      <!-- Name -->
+      <div class="field-row">
+        <div class="field">
+          <label for="name">Full Name</label>
+          <input
+            id="name"
+            type="text"
+            name="name"
+            [(ngModel)]="model.name"
+            required
+            #name="ngModel"
+            placeholder="Jane Doe"
+            [class.invalid]="name.invalid && (name.dirty || name.touched || submitted)"
+          />
+          <span class="error-msg" *ngIf="name.invalid && (name.dirty || name.touched || submitted)">
+            Full name is required.
+          </span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="field-row">
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            [(ngModel)]="model.email"
+            required
+            email
+            #email="ngModel"
+            placeholder="jane@example.com"
+            [class.invalid]="email.invalid && (email.dirty || email.touched || submitted)"
+          />
+          <span
+            class="error-msg"
+            *ngIf="email.errors?.['required'] && (email.dirty || email.touched || submitted)"
+          >
+            Email is required.
+          </span>
+          <span
+            class="error-msg"
+            *ngIf="email.errors?.['email'] && (email.dirty || email.touched || submitted)"
+          >
+            Enter a valid email address.
+          </span>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="field-row">
+        <div class="field">
+          <label for="contact">Phone Number</label>
+          <input
+            id="contact"
+            type="text"
+            name="contact"
+            [(ngModel)]="model.contact"
+            required
+            pattern="^[0-9]{10}$"
+            #contact="ngModel"
+            placeholder="10-digit number"
+            [class.invalid]="contact.invalid && (contact.dirty || contact.touched || submitted)"
+          />
+          <span
+            class="error-msg"
+            *ngIf="contact.errors?.['required'] && (contact.dirty || contact.touched || submitted)"
+          >
+            Phone number is required.
+          </span>
+          <span
+            class="error-msg"
+            *ngIf="contact.errors?.['pattern'] && (contact.dirty || contact.touched || submitted)"
+          >
+            Enter a valid 10-digit phone number.
+          </span>
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="field-row">
+        <div class="field">
+          <label for="address">Address</label>
+          <textarea
+            id="address"
+            name="address"
+            [(ngModel)]="model.address"
+            required
+            #address="ngModel"
+            placeholder="123 Main St, City, State"
+            [class.invalid]="address.invalid && (address.dirty || address.touched || submitted)"
+          ></textarea>
+          <span
+            class="error-msg"
+            *ngIf="address.invalid && (address.dirty || address.touched || submitted)"
+          >
+            Address is required.
+          </span>
+        </div>
+      </div>
+
+      <!-- Gender -->
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">Gender</label>
+          <div class="gender-group">
+            <label class="radio-pill">
+              <input
+                type="radio"
+                name="gender"
+                value="Male"
+                [(ngModel)]="model.gender"
+                required
+                #gender="ngModel"
+              />
+              <span>Male</span>
+            </label>
+            <label class="radio-pill">
+              <input type="radio" name="gender" value="Female" [(ngModel)]="model.gender" />
+              <span>Female</span>
+            </label>
+            <label class="radio-pill">
+              <input type="radio" name="gender" value="Other" [(ngModel)]="model.gender" />
+              <span>Other</span>
+            </label>
+          </div>
+          <span class="error-msg" *ngIf="gender.invalid && (gender.touched || submitted)">
+            Please select a gender.
+          </span>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <span>Submit</span>
+      </button>
+    </form>
+  </div>
+</div>
