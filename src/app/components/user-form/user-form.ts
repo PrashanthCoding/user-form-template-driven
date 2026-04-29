@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
+import { UserDisplay, UserModel } from '../user-display/user-display';
 
 interface Bubble {
   x: number;
@@ -14,14 +15,16 @@ interface Bubble {
 
 @Component({
   selector: 'app-user-form',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, UserDisplay],
   templateUrl: './user-form.html',
   styleUrl: './user-form.css',
 })
 export class UserForm implements AfterViewInit {
   submitted = false;
+  showDisplay = false;
+  users: UserModel[] = [];
 
-  model = {
+  model: UserModel = {
     name: '',
     address: '',
     contact: '',
@@ -32,17 +35,21 @@ export class UserForm implements AfterViewInit {
   onSubmit(form: NgForm) {
     this.submitted = true;
     if (form.valid) {
-      console.log(this.model);
-      alert('Form Submitted Successfully');
+      this.users.push({ ...this.model });
+      this.showDisplay = true;
       this.submitted = false;
       form.resetForm();
+      this.model = { name: '', address: '', contact: '', gender: '', email: '' };
     }
+  }
+
+  goBack() {
+    this.showDisplay = false;
   }
 
   ngAfterViewInit(): void {
     const canvas = document.querySelector('.bubble-canvas') as HTMLCanvasElement;
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d')!;
     let bubbles: Bubble[] = [];
     let animId: number;
@@ -81,16 +88,13 @@ export class UserForm implements AfterViewInit {
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       for (const b of bubbles) {
         const { r, g, b: bl } = b.color;
-
         ctx.beginPath();
         ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
         ctx.strokeStyle = `rgba(${r},${g},${bl},${b.opacity * 2})`;
         ctx.lineWidth = 1.5;
         ctx.stroke();
-
         const grad = ctx.createRadialGradient(
           b.x - b.r * 0.3,
           b.y - b.r * 0.3,
@@ -103,18 +107,15 @@ export class UserForm implements AfterViewInit {
         grad.addColorStop(1, `rgba(${r},${g},${bl},0)`);
         ctx.fillStyle = grad;
         ctx.fill();
-
         b.x += b.dx;
         b.y += b.dy;
         if (b.y + b.r < 0) Object.assign(b, makeBubble());
       }
-
       animId = requestAnimationFrame(draw);
     };
 
     init();
     draw();
-
     window.addEventListener('resize', () => {
       cancelAnimationFrame(animId);
       init();

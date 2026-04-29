@@ -1,7 +1,8 @@
 <div class="bg">
   <canvas class="bubble-canvas"></canvas>
 
-  <div class="form-card">
+  <!-- FORM VIEW -->
+  <div class="form-card" *ngIf="!showDisplay">
     <div class="brand">
       <div class="brand-icon">
         <svg
@@ -117,7 +118,8 @@
             #address="ngModel"
             placeholder="123 Main St, City, State"
             [class.invalid]="address.invalid && (address.dirty || address.touched || submitted)"
-          ></textarea>
+          >
+          </textarea>
           <span
             class="error-msg"
             *ngIf="address.invalid && (address.dirty || address.touched || submitted)"
@@ -162,5 +164,25 @@
         <span>Submit</span>
       </button>
     </form>
+  </div>
+
+  <!-- DISPLAY VIEW -->
+  <div class="display-container" *ngIf="showDisplay">
+    <button class="back-btn" (click)="goBack()">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M19 12H5M12 5l-7 7 7 7" />
+      </svg>
+      Add Another
+    </button>
+    <app-user-display [users]="users"></app-user-display>
   </div>
 </div>
