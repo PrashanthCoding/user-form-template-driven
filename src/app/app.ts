@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { UserForm } from './components/user-form/user-form';
+import { AuthForm } from './components/auth-form/auth-form';
 
 @Component({
   selector: 'app-root',
-  imports: [UserForm],
+  imports: [AuthForm],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

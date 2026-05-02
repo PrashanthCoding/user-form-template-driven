@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { UserDisplay, UserModel } from '../user-display/user-display';
 
 interface Bubble {
   x: number;
@@ -14,57 +13,54 @@ interface Bubble {
 }
 
 @Component({
-  selector: 'app-user-form',
-  imports: [CommonModule, FormsModule, UserDisplay],
-  templateUrl: './user-form.html',
-  styleUrl: './user-form.css',
+  selector: 'app-auth-form',
+  imports: [CommonModule, FormsModule],
+  templateUrl: './auth-form.html',
+  styleUrl: './auth-form.css',
 })
-export class UserForm implements AfterViewInit {
-  submitted = false;
-  showDisplay = false;
-  users: UserModel[] = [];
-  editingIndex: number | null = null;
+export class AuthForm implements AfterViewInit {
+  activeTab: 'login' | 'register' = 'login';
+  loginSubmitted = false;
+  registerSubmitted = false;
 
-  model: UserModel = {
+  loginModel = { email: '', password: '' };
+
+  registerModel = {
     name: '',
-    address: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
     contact: '',
     gender: '',
-    email: '',
   };
 
-  onEditUser(event: { user: UserModel; index: number }) {
-    this.model = { ...event.user };
-    this.editingIndex = event.index;
-    this.showDisplay = false;
+  switchTab(tab: 'login' | 'register') {
+    this.activeTab = tab;
+    this.loginSubmitted = false;
+    this.registerSubmitted = false;
   }
 
-  onDeleteUser(index: number) {
-    this.users.splice(index, 1);
-    if (this.users.length === 0) {
-      this.showDisplay = false;
-    }
-  }
-
-  // Update onSubmit to handle edit:
-  onSubmit(form: NgForm) {
-    this.submitted = true;
+  onLogin(form: NgForm) {
+    this.loginSubmitted = true;
     if (form.valid) {
-      if (this.editingIndex !== null) {
-        this.users[this.editingIndex] = { ...this.model };
-        this.editingIndex = null;
-      } else {
-        this.users.push({ ...this.model });
-      }
-      this.showDisplay = this.users.length > 0;
-      this.submitted = false;
+      alert(`Welcome back, ${this.loginModel.email}!`);
+      this.loginSubmitted = false;
       form.resetForm();
-      this.model = { name: '', address: '', contact: '', gender: '', email: '' };
     }
   }
 
-  goBack() {
-    this.showDisplay = false;
+  onRegister(form: NgForm) {
+    this.registerSubmitted = true;
+    if (form.valid) {
+      if (this.registerModel.password !== this.registerModel.confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
+      alert(`Account created for ${this.registerModel.name}!`);
+      this.registerSubmitted = false;
+      form.resetForm();
+      this.switchTab('login');
+    }
   }
 
   ngAfterViewInit(): void {

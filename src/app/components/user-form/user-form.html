@@ -160,8 +160,9 @@
         </div>
       </div>
 
+      <!-- Update submit button to show Edit mode label -->
       <button type="submit" class="submit-btn">
-        <span>Submit</span>
+        <span>{{ editingIndex !== null ? 'Update User' : 'Submit' }}</span>
       </button>
     </form>
   </div>
@@ -183,6 +184,12 @@
       </svg>
       Add Another
     </button>
-    <app-user-display [users]="users"></app-user-display>
+    <!-- In the display container -->
+    <app-user-display
+      [users]="users"
+      (editUser)="onEditUser($event)"
+      (deleteUser)="onDeleteUser($event)"
+    >
+    </app-user-display>
   </div>
 </div>

@@ -1,0 +1,471 @@
+<div class="bg">
+  <canvas class="bubble-canvas"></canvas>
+
+  <div class="auth-card">
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-icon">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      </div>
+      <div>
+        <h2>Welcome</h2>
+        <p class="subtitle">Sign in or create your account</p>
+      </div>
+    </div>
+
+    <!-- Tab switcher -->
+    <div class="tab-bar">
+      <button class="tab-btn" [class.active]="activeTab === 'login'" (click)="switchTab('login')">
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+          <polyline points="10 17 15 12 10 7" />
+          <line x1="15" y1="12" x2="3" y2="12" />
+        </svg>
+        Login
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'register'"
+        (click)="switchTab('register')"
+      >
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <line x1="19" y1="8" x2="19" y2="14" />
+          <line x1="22" y1="11" x2="16" y2="11" />
+        </svg>
+        Register
+      </button>
+      <div class="tab-indicator" [class.right]="activeTab === 'register'"></div>
+    </div>
+
+    <!-- ── LOGIN FORM ── -->
+    <form
+      *ngIf="activeTab === 'login'"
+      #loginForm="ngForm"
+      (ngSubmit)="onLogin(loginForm)"
+      novalidate
+      class="auth-form slide-in"
+    >
+      <div class="field-row">
+        <div class="field">
+          <label for="l-email">Email Address</label>
+          <div class="input-wrap">
+            <svg
+              class="input-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            <input
+              id="l-email"
+              type="email"
+              name="lemail"
+              [(ngModel)]="loginModel.email"
+              required
+              email
+              #lemail="ngModel"
+              placeholder="jane@example.com"
+              [class.invalid]="lemail.invalid && (lemail.touched || loginSubmitted)"
+            />
+          </div>
+          <span
+            class="error-msg"
+            *ngIf="lemail.errors?.['required'] && (lemail.touched || loginSubmitted)"
+          >
+            Email is required.
+          </span>
+          <span
+            class="error-msg"
+            *ngIf="lemail.errors?.['email'] && (lemail.touched || loginSubmitted)"
+          >
+            Enter a valid email address.
+          </span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="l-password">Password</label>
+          <div class="input-wrap">
+            <svg
+              class="input-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <input
+              id="l-password"
+              type="password"
+              name="lpassword"
+              [(ngModel)]="loginModel.password"
+              required
+              minlength="6"
+              #lpassword="ngModel"
+              placeholder="Enter your password"
+              [class.invalid]="lpassword.invalid && (lpassword.touched || loginSubmitted)"
+            />
+          </div>
+          <span
+            class="error-msg"
+            *ngIf="lpassword.errors?.['required'] && (lpassword.touched || loginSubmitted)"
+          >
+            Password is required.
+          </span>
+          <span
+            class="error-msg"
+            *ngIf="lpassword.errors?.['minlength'] && (lpassword.touched || loginSubmitted)"
+          >
+            Minimum 6 characters.
+          </span>
+        </div>
+      </div>
+
+      <div class="forgot-row">
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+          <polyline points="10 17 15 12 10 7" />
+          <line x1="15" y1="12" x2="3" y2="12" />
+        </svg>
+        Sign In
+      </button>
+
+      <p class="switch-note">
+        Don't have an account?
+        <span class="switch-link" (click)="switchTab('register')">Create one</span>
+      </p>
+    </form>
+
+    <!-- ── REGISTER FORM ── -->
+    <form
+      *ngIf="activeTab === 'register'"
+      #registerForm="ngForm"
+      (ngSubmit)="onRegister(registerForm)"
+      novalidate
+      class="auth-form slide-in"
+    >
+      <div class="field-row">
+        <div class="field">
+          <label for="r-name">Full Name</label>
+          <div class="input-wrap">
+            <svg
+              class="input-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <input
+              id="r-name"
+              type="text"
+              name="rname"
+              [(ngModel)]="registerModel.name"
+              required
+              #rname="ngModel"
+              placeholder="Jane Doe"
+              [class.invalid]="rname.invalid && (rname.touched || registerSubmitted)"
+            />
+          </div>
+          <span class="error-msg" *ngIf="rname.invalid && (rname.touched || registerSubmitted)">
+            Full name is required.
+          </span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="r-email">Email Address</label>
+          <div class="input-wrap">
+            <svg
+              class="input-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            <input
+              id="r-email"
+              type="email"
+              name="remail"
+              [(ngModel)]="registerModel.email"
+              required
+              email
+              #remail="ngModel"
+              placeholder="jane@example.com"
+              [class.invalid]="remail.invalid && (remail.touched || registerSubmitted)"
+            />
+          </div>
+          <span
+            class="error-msg"
+            *ngIf="remail.errors?.['required'] && (remail.touched || registerSubmitted)"
+          >
+            Email is required.
+          </span>
+          <span
+            class="error-msg"
+            *ngIf="remail.errors?.['email'] && (remail.touched || registerSubmitted)"
+          >
+            Enter a valid email address.
+          </span>
+        </div>
+      </div>
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="r-password">Password</label>
+          <div class="input-wrap">
+            <svg
+              class="input-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <input
+              id="r-password"
+              type="password"
+              name="rpassword"
+              [(ngModel)]="registerModel.password"
+              required
+              minlength="6"
+              #rpassword="ngModel"
+              placeholder="Min 6 chars"
+              [class.invalid]="rpassword.invalid && (rpassword.touched || registerSubmitted)"
+            />
+          </div>
+          <span
+            class="error-msg"
+            *ngIf="rpassword.errors?.['required'] && (rpassword.touched || registerSubmitted)"
+          >
+            Password is required.
+          </span>
+          <span
+            class="error-msg"
+            *ngIf="rpassword.errors?.['minlength'] && (rpassword.touched || registerSubmitted)"
+          >
+            Minimum 6 characters.
+          </span>
+        </div>
+
+        <div class="field">
+          <label for="r-confirm">Confirm Password</label>
+          <div class="input-wrap">
+            <svg
+              class="input-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            <input
+              id="r-confirm"
+              type="password"
+              name="rconfirm"
+              [(ngModel)]="registerModel.confirmPassword"
+              required
+              #rconfirm="ngModel"
+              placeholder="Repeat password"
+              [class.invalid]="rconfirm.invalid && (rconfirm.touched || registerSubmitted)"
+            />
+          </div>
+          <span
+            class="error-msg"
+            *ngIf="rconfirm.invalid && (rconfirm.touched || registerSubmitted)"
+          >
+            Please confirm your password.
+          </span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="r-contact">Phone Number</label>
+          <div class="input-wrap">
+            <svg
+              class="input-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.08 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16.92z"
+              />
+            </svg>
+            <input
+              id="r-contact"
+              type="text"
+              name="rcontact"
+              [(ngModel)]="registerModel.contact"
+              required
+              pattern="^[0-9]{10}$"
+              #rcontact="ngModel"
+              placeholder="10-digit number"
+              [class.invalid]="rcontact.invalid && (rcontact.touched || registerSubmitted)"
+            />
+          </div>
+          <span
+            class="error-msg"
+            *ngIf="rcontact.errors?.['required'] && (rcontact.touched || registerSubmitted)"
+          >
+            Phone number is required.
+          </span>
+          <span
+            class="error-msg"
+            *ngIf="rcontact.errors?.['pattern'] && (rcontact.touched || registerSubmitted)"
+          >
+            Enter a valid 10-digit number.
+          </span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">Gender</label>
+          <div class="gender-group">
+            <label class="radio-pill">
+              <input
+                type="radio"
+                name="rgender"
+                value="Male"
+                [(ngModel)]="registerModel.gender"
+                required
+                #rgender="ngModel"
+              />
+              <span>Male</span>
+            </label>
+            <label class="radio-pill">
+              <input
+                type="radio"
+                name="rgender"
+                value="Female"
+                [(ngModel)]="registerModel.gender"
+              />
+              <span>Female</span>
+            </label>
+            <label class="radio-pill">
+              <input type="radio" name="rgender" value="Other" [(ngModel)]="registerModel.gender" />
+              <span>Other</span>
+            </label>
+          </div>
+          <span class="error-msg" *ngIf="rgender.invalid && (rgender.touched || registerSubmitted)">
+            Please select a gender.
+          </span>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <line x1="19" y1="8" x2="19" y2="14" />
+          <line x1="22" y1="11" x2="16" y2="11" />
+        </svg>
+        Create Account
+      </button>
+
+      <p class="switch-note">
+        Already have an account?
+        <span class="switch-link" (click)="switchTab('login')">Sign in</span>
+      </p>
+    </form>
+  </div>
+</div>
